@@ -34,8 +34,6 @@ func View(command string, args []string) (string, error) {
 		return "Error parsing response from API", err
 	}
 
-	// return string(body), nil
-
 	var keys [][]string
 	var sb strings.Builder
 
