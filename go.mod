@@ -9,6 +9,7 @@ require (
 )
 
 require (
+	github.com/akl-infra/slf/v2 v2.0.0-20240511191100-7d1131675154
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/lipgloss v0.10.0 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
@@ -20,6 +21,6 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
-	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
+	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 	golang.org/x/sys v0.13.0 // indirect
 )
