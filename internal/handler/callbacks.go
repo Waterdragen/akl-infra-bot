@@ -72,24 +72,24 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 	}
 
+	var reply string
 	args := parseArgs(content)
-	command := args[0]
-	if len(args) > 1 {
-		args = args[1:]
+	if len(args) == 0 {
+		reply = "No command provided"
 	} else {
-		args = []string{}
-	}
-	log.Infof("Cmd: %s, Args: %s", command, args)
+		command := args[0]
+		if len(args) > 1 {
+			args = args[1:]
+		} else {
+			args = []string{}
+		}
 
-	reply, err := Dispatch(command, args)
-	if err != nil {
-		log.Errorf("Error in command: %s %s => %s", command, args, err)
+		reply, err = Dispatch(command, args)
+		if err != nil {
+			log.Errorf("Error in command: %s %s => %s", command, args, err)
+		}
 	}
-	if _, err := s.ChannelMessageSendReply(
-		m.ChannelID,
-		reply,
-		m.Reference(),
-	); err != nil {
+	if _, err = s.ChannelMessageSendReply(m.ChannelID, reply, m.Reference()); err != nil {
 		log.Error(err)
 	}
 }
