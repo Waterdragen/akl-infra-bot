@@ -22,7 +22,6 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	ch, err := s.Channel(m.ChannelID)
 	if err != nil {
-		log.Errorf("Error getting channel: %s", err)
 		return
 	}
 	isDM := ch.Type == discordgo.ChannelTypeDM
@@ -39,7 +38,7 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	// Match user/nick/role/channel mentions
-	mentionRegex := regexp.MustCompile(`<@!?\d+>|<@&\d+>|<#\d+>`)
+	mentionRegex := regexp.MustCompile(`^(<@!?\d+>\s+|<@&\d+>\s+|<#\d+>\s+)`)
 
 	// Remove mentions from the message content
 	content := mentionRegex.ReplaceAllString(m.Content, "")
@@ -56,7 +55,7 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if !(isDM || isMention) {
 		var ok bool
 		if strings.HasPrefix(m.Content, "!") {
-			content, ok = strings.CutPrefix(content, Trigger)
+			content, ok = strings.CutPrefix(content, Trigger+" ")
 			if !ok {
 				log.Info("Didn't find trigger")
 				return
