@@ -2,6 +2,7 @@ package handler
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -9,12 +10,6 @@ import (
 )
 
 const Trigger = "!akl"
-
-func parseArgs(str string) []string {
-	re := regexp.MustCompile(`[^\s"']+|"([^"]*)"|'([^']*)'`)
-	matches := re.FindAllString(str, -1)
-	return matches
-}
 
 func OnReady(s *discordgo.Session, r *discordgo.Ready) {
 	log.Info("Bot is ready")
@@ -73,20 +68,20 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	var reply string
-	args := parseArgs(content)
-	if len(args) == 0 {
+	if content == "" {
 		reply = "No command provided"
 	} else {
-		command := args[0]
-		if len(args) > 1 {
-			args = args[1:]
-		} else {
-			args = []string{}
+		commandArg := strings.SplitN(content, " ", 2)
+		command := commandArg[0]
+		arg := ""
+		if len(commandArg) > 1 {
+			arg = commandArg[1]
 		}
+		id, _ := strconv.ParseUint(m.Author.ID, 10, 64)
 
-		reply, err = Dispatch(command, args)
+		reply, err = Dispatch(command, arg, id)
 		if err != nil {
-			log.Errorf("Error in command: %s %s => %s", command, args, err)
+			log.Errorf("Error in command: %s %s => %s", command, arg, err)
 		}
 	}
 	if _, err = s.ChannelMessageSendReply(m.ChannelID, reply, m.Reference()); err != nil {
