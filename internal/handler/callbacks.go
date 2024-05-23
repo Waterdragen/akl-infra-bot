@@ -55,11 +55,12 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if !(isDM || isMention) {
 		var ok bool
 		if strings.HasPrefix(m.Content, "!") {
-			content, ok = strings.CutPrefix(content, Trigger+" ")
+			content, ok = strings.CutPrefix(content, Trigger)
 			if !ok {
 				log.Info("Didn't find trigger")
 				return
 			}
+			content = strings.TrimLeft(content, " ")
 		} else {
 			// Ignore unprefixed channel messages
 			return
