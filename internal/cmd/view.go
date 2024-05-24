@@ -3,6 +3,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/akl-infra/bot/internal/cmd/cmd_core"
+	"github.com/akl-infra/bot/internal/util/parser"
 	"io"
 	"strings"
 
@@ -10,7 +12,10 @@ import (
 	"github.com/akl-infra/slf/v2"
 )
 
-func View(command string, args []string) (string, error) {
+type View struct{ cmd_core.DefaultCommand }
+
+func (cmd View) Exec(arg string, _ uint64) (string, error) {
+	args := parser.ParseArgs(arg)
 	if len(args) == 0 {
 		return "No layout specified", nil
 	}
@@ -50,4 +55,12 @@ func View(command string, args []string) (string, error) {
 	}
 
 	return sb.String(), nil
+}
+
+func (cmd View) Use() string {
+	return "!akl view"
+}
+
+func (cmd View) Desc() string {
+	return "view layouts"
 }
