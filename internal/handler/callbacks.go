@@ -38,7 +38,7 @@ func OnMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	// Match user/nick/role/channel mentions
-	mentionRegex := regexp.MustCompile(`^(<@!?\d+>\s+|<@&\d+>\s+|<#\d+>\s+)`)
+	mentionRegex := regexp.MustCompile(`<@!?\d+>|<@&\d+>|<#\d+>`)
 
 	// Remove mentions from the message content
 	content := mentionRegex.ReplaceAllString(m.Content, "")
